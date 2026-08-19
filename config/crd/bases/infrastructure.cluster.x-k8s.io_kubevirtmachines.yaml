@@ -3630,6 +3630,33 @@ spec:
                                             <networkName>, <namespace>/<networkName>. If namespace is not
                                             specified, VMI namespace is assumed.
                                           type: string
+                                        resourceClaim:
+                                          description: |-
+                                            ResourceClaim, when set, indicates that the network device (SR-IOV VF)
+                                            backing this Multus network is allocated through a DRA ResourceClaim
+                                            referenced by a VMI spec.resourceClaims[] entry, instead of a
+                                            device-plugin extended resource derived from the
+                                            NetworkAttachmentDefinition's k8s.v1.cni.cncf.io/resourceName annotation.
+                                            The NAD must still carry that annotation: Multus (with DRA integration)
+                                            uses it to map the allocated device to this network attachment.
+                                            This field should only be configured if the MultusNetworksWithDRA
+                                            feature-gate is enabled.
+                                            This feature is in alpha.
+                                          properties:
+                                            claimName:
+                                              description: |-
+                                                ClaimName references the name of an entry in the
+                                                VMI's spec.resourceClaims[] array. The referenced
+                                                entry may use either resourceClaimName or
+                                                resourceClaimTemplateName.
+                                              type: string
+                                            requestName:
+                                              description: |-
+                                                RequestName specifies which request from the
+                                                ResourceClaim/ResourceClaimTemplate spec.devices.requests array this
+                                                claim request corresponds to.
+                                              type: string
+                                          type: object
                                       required:
                                       - networkName
                                       type: object
@@ -3847,7 +3874,7 @@ spec:
                                   This is an alpha field and requires enabling the
                                   DynamicResourceAllocation feature gate in kubernetes
                                    https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/
-                                  This field should only be configured if one of the feature-gates GPUsWithDRA, HostDevicesWithDRA,
+                                  This field should only be configured if one of the feature-gates GPUsWithDRA, HostDevicesWithDRA, MultusNetworksWithDRA,
                                   or NetworkDevicesWithDRA is enabled.
                                   This feature is in alpha.
                                 items:
