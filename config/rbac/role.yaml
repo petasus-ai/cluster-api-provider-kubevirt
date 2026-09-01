@@ -43,10 +43,19 @@ rules:
   - cluster.x-k8s.io
   resources:
   - clusters
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cluster.x-k8s.io
+  resources:
   - machines
   verbs:
   - get
   - list
+  - patch
+  - update
   - watch
 - apiGroups:
   - infrastructure.cluster.x-k8s.io
@@ -67,6 +76,7 @@ rules:
   - kubevirtclusters/status
   - kubevirtmachines/status
   - kubevirtmachinetemplates/status
+  - kubevirtremediations/status
   verbs:
   - get
   - patch
@@ -75,9 +85,20 @@ rules:
   - infrastructure.cluster.x-k8s.io
   resources:
   - kubevirtmachinetemplates
+  - kubevirtremediationtemplates
   verbs:
   - get
   - list
+  - watch
+- apiGroups:
+  - infrastructure.cluster.x-k8s.io
+  resources:
+  - kubevirtremediations
+  verbs:
+  - get
+  - list
+  - patch
+  - update
   - watch
 - apiGroups:
   - kubevirt.io
@@ -92,6 +113,8 @@ rules:
   verbs:
   - delete
   - get
+  - list
+  - watch
 - apiGroups:
   - kubevirt.io
   resources:
@@ -100,8 +123,10 @@ rules:
   - create
   - delete
   - get
+  - list
   - patch
   - update
+  - watch
 - apiGroups:
   - rbac.authorization.k8s.io
   resources:

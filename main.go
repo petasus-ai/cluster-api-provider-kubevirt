@@ -252,6 +252,14 @@ func setupReconcilers(ctx context.Context, mgr ctrl.Manager) {
 		os.Exit(1)
 	}
 
+	if err := (&controllers.KubevirtRemediationReconciler{
+		Client:       mgr.GetClient(),
+		InfraCluster: infracluster.New(mgr.GetClient(), noCachedClient, controllerNS),
+	}).SetupWithManager(ctx, mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "KubevirtRemediation")
+		os.Exit(1)
+	}
+
 	if err := (&controllers.KubevirtMachineTemplateReconciler{
 		Client: mgr.GetClient(),
 	}).SetupWithManager(ctx, mgr, controller.Options{
